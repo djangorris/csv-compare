@@ -42,7 +42,7 @@ diff_output = diff_panel.apply(report_diff, axis=0)
 #Diff'ing is done, we need to get a list of removed items
 
 #Flag all duplicated NAMES 
-changes['duplicate']=changes["NAME"].isin(dupe_accts)
+changes.loc[:,('duplicate')]=changes["NAME"].isin(dupe_accts)
 
 #Identify non-duplicated items that are in the old version and did not show in the new version
 removed_accounts = changes[(changes["duplicate"] == False) & (changes["version"] == "old")]
@@ -53,13 +53,13 @@ removed_accounts = changes[(changes["duplicate"] == False) & (changes["version"]
 new_account_set = full_set.drop_duplicates(subset=["NAME"],keep='first')
 
 #Identify dupes in this new dataframe
-new_account_set['duplicate']=new_account_set["NAME"].isin(dupe_accts)
+new_account_set.loc[:,('duplicate')]=new_account_set["NAME"].isin(dupe_accts)
 
 #Identify added accounts
 added_accounts = new_account_set[(new_account_set["duplicate"] == False) & (new_account_set["version"] == "new")]
 
 #Save the changes to excel but only include the columns we care about
-writer = pd.ExcelWriter("diff-mine-Feb2-test-march-17.xlsx")
+writer = pd.ExcelWriter("diff-mine-Feb2-test-march-18.xlsx")
 diff_output.to_excel(writer,"changed")
 removed_accounts.to_excel(writer,"removed",index=False,columns=["NAME"])
 added_accounts.to_excel(writer,"added",index=False,columns=["NAME"])
